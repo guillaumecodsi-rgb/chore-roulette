@@ -85,10 +85,18 @@ export default function SpinScreen({ chore, participants, onSpinComplete, onBack
     const winnerIndex = Math.floor(Math.random() * participants.length)
     const sliceAngle = 360 / participants.length
 
-    // Calculate final rotation: multiple full spins + landing in the middle of winner slice
-    // The pointer is at the top (270 degrees in standard canvas coords)
-    const targetAngle = 360 - (winnerIndex * sliceAngle + sliceAngle / 2)
-    const totalRotation = rotation + 360 * 8 + targetAngle
+    // The pointer is at the top of the screen (270° in standard canvas coordinates).
+    // Canvas draws slice 0 starting at 0° (3 o'clock position).
+    // To land the winner's slice under the pointer:
+    // - The center of slice i is at: i * sliceAngle + sliceAngle/2 (degrees from 3 o'clock)
+    // - The pointer is at 270° from 3 o'clock (i.e. top)
+    // - We need to rotate so that the winner slice center aligns with 270°
+    const winnerSliceCenter = winnerIndex * sliceAngle + sliceAngle / 2
+    const targetAngle = 270 - winnerSliceCenter
+
+    // Normalize to positive and add full spins
+    const normalizedTarget = ((targetAngle % 360) + 360) % 360
+    const totalRotation = rotation + 360 * 8 + normalizedTarget
 
     setRotation(totalRotation)
 
