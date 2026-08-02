@@ -1,0 +1,6 @@
+cd chore-roulette
+git init
+git add .
+git commit -m "Initial commit: Family Chore Roulette"
+git remote add origin https://github.com/YOUR_USERNAME/chore-roulette.git
+git push -u origin main
